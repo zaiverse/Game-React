@@ -27,7 +27,6 @@ HandleImages = spec =>{
   // const currentImage = this.state.imagesClicked.find(item => item.spec === spec);
 
   if(this.state.clickedArray.includes(spec)){
-    alert("first");
       this.setState({
         clickedArray:[],
         myImages: myImages,
@@ -36,7 +35,6 @@ HandleImages = spec =>{
         currentScore: 0,
     });
     }else{
-    alert("second");
 
     // const newId = this.state.imagesClicked.filter(item => item.spec !== spec);
 
