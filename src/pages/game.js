@@ -1,32 +1,79 @@
 import React, { Component } from "react";
+import myImages from "../images.json";
 import "./style.css";
+import ImgHolder from "../components/ImgHolder";
+import Wrapper from "../components/Wrapper";
 
 class Game extends Component {
   // Setting the component's initial state
   state = {
-    firstImage: "https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjjpM-Y1IziAhUJjq0KHSkSBgMQjRx6BAgBEAU&url=http%3A%2F%2Fchillin.sk%2F2015%2F05%2F10-dovodov-preco-pit-kazde-rano-vodu-s-citronom%2F&psig=AOvVaw0vYwnOuXjUO-TM--hOHUaW&ust=1557429625145168",
-    secondImage: "http://liuzhou.co.uk/wordpress/wp-content/uploads/2013/07/Lantern-Chillies.jpg",
-    ThirdImage: "https://static1.squarespace.com/static/55f32bdde4b0cc7d7c52a9b6/55f9b852e4b046c95b212ab3/55f9b871e4b0f82c9f452de4/1443808357933/.50+Yellow+Bell+Pepper+Dice.jpg",
-    fourthImage:"https://7gigzxopz0uiqxo1-zippykid.netdna-ssl.com/wp-content/uploads/2013/06/ripe-unripe-bananas.jpg",
-    fifthImage:"http://leiasgreenliving.files.wordpress.com/2011/07/corn.jpg",
-    sixthImage:"https://cdn.pixabay.com/photo/2015/03/23/23/40/noodles-686857_960_720.jpg",
+    myImages,
+    imagesClicked: myImages,
     currentScore: 0,
     highestScore: 0
 };
 
+  // sort through images
+  sortImages = array => {
+    array.sort((a, b) => 0.5 - Math.random());
+    return array;
+  };
 
+//create function that shuffles images and checks whether the image has been clicked before or not
+HandleImages = spec =>{
+  
+  const currentImage = this.state.imagesClicked.find(item => item.spec === spec);
+
+  if(currentImage === undefined){
+    alert("first");
+      this.setState({
+        myImages: myImages,
+        imagesClicked: myImages,
+        highestScore: (this.state.currentScore > this.state.highestScore)?this.state.currentScore:this.state.highestScore,
+        currentScore: 0,
+    });
+    }else{
+    alert("second");
+
+    const newId = this.state.imagesClicked.filter(item => item.spec !== spec);
+
+    this.setState(
+      {
+          currentScore: this.state.currentScore + 1,
+          myImages: myImages,
+          imagesClicked: newId
+      },
+      () => {
+        if (this.state.currentScore === 6) {
+            this.setState({
+                myImages: myImages,
+                imagesClicked: myImages,
+                currentScore: 0
+            });
+          }
+        }
+      );
+    }
+    this.sortImages(myImages);
+}
+
+//setstate
+
+//inside of render...create map loop to loop through array
   render() {
     return (
-      <div>
-          <div className="container">
-            <div className="float-left">
-                <img src={this.state.secondImage} className="size" />
-                <img src={this.state.ThirdImage} className="size" />
-                <img src={this.state.fourthImage} className="size" />
-                <img src={this.state.fifthImage} className="size" />
-            </div>
-          </div>
-      </div>
+          <Wrapper className="float-left">
+            <h1>current score: {this.state.currentScore}</h1>
+            <h1>Highest score: {this.state.highestScore}</h1>
+            {this.state.myImages.map(image  => {
+            return <ImgHolder 
+                  spec={image.id} 
+                  onClick={this.HandleImages} 
+                  className="size" 
+                  src={image.src}>
+              /></ImgHolder>
+            })};
+        </Wrapper>
     );
   }
 }
