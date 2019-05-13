@@ -26,7 +26,7 @@ HandleImages = spec =>{
   
   // const currentImage = this.state.imagesClicked.find(item => item.spec === spec);
 
-  if(this.state.clickedArray.includes(id)){
+  if(this.state.clickedArray.includes(spec)){
     alert("first");
       this.setState({
         clickedArray:[],
@@ -42,7 +42,7 @@ HandleImages = spec =>{
 
     this.setState(
       {
-          clickedArray: this.state.clickedArray.concat([id]),
+          clickedArray: this.state.clickedArray.concat([spec]),
           currentScore: this.state.currentScore + 1
       },
       () => {
